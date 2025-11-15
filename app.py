@@ -35,11 +35,12 @@ def is_suspicious_page(driver) -> bool:
 
 
 def run_flow(link: str, profile_url: str, message_text: str) -> bool:
+    options = webdriver.ChromeOptions()
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('--disable-gpu')
     driver = webdriver.Chrome()
-    driver.set_window_size(
-        random.randint(1000, 1400),
-        random.randint(700, 900)
-    )
 
     driver.get("https://www.linkedin.com/login")
     driver.implicitly_wait(5)
