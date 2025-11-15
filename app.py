@@ -38,33 +38,13 @@ def run_flow(link: str, profile_url: str, message_text: str) -> bool:
     options = webdriver.ChromeOptions()
 
     options.add_argument('--headless=new')
-
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
     options.add_argument('--disable-gpu')
-    options.add_argument('--disable-software-rasterizer')
-
-    options.add_argument('--disable-extensions')
-    options.add_argument('--disable-background-networking')
-    options.add_argument('--disable-default-apps')
-    options.add_argument('--disable-sync')
-    options.add_argument('--disable-translate')
-    options.add_argument('--metrics-recording-only')
-    options.add_argument('--mute-audio')
-    options.add_argument('--no-first-run')
-    options.add_argument('--safebrowsing-disable-auto-update')
-    options.add_argument('--disable-setuid-sandbox')
     options.add_argument('--single-process')
-    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('--disable-setuid-sandbox')
 
-    options.binary_location = '/usr/bin/chromium'
-
-    service = webdriver.ChromeService(
-        executable_path='/usr/bin/chromedriver',
-        log_path='/tmp/chromedriver.log'
-    )
-
-    driver = webdriver.Chrome(service=service, options=options)
+    driver = webdriver.Chrome(options=options)
 
     driver.get("https://www.linkedin.com/login")
     driver.implicitly_wait(5)
