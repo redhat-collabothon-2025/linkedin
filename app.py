@@ -35,7 +35,7 @@ def is_suspicious_page(driver) -> bool:
     return "suspicious" in html
 
 
-def run_flow(login_url: str, profile_url: str, message_text: str) -> bool:
+def run_flow(link: str, profile_url: str, message_text: str) -> bool:
     driver = webdriver.Chrome()
     driver.set_window_size(
         random.randint(1000, 1400),
@@ -59,13 +59,13 @@ def run_flow(login_url: str, profile_url: str, message_text: str) -> bool:
 
     human_move_and_click(driver, username_input)
 
-    human_type(username_input, "pib2703@gmail.com", 0.15, 0.6, typo_prob=0.03)
+    human_type(username_input, USER_EMAIL, 0.15, 0.6, typo_prob=0.03)
 
     time.sleep(random.uniform(0.2, 0.7))
     username_input.send_keys(Keys.TAB)
     time.sleep(random.uniform(0.2, 0.7))
 
-    human_type(password_input, "white-hat", 0.15, 0.6, typo_prob=0.02)
+    human_type(password_input, USER_PASSWORD, 0.15, 0.6, typo_prob=0.02)
 
     button = driver.find_element(
         By.XPATH,
@@ -82,32 +82,10 @@ def run_flow(login_url: str, profile_url: str, message_text: str) -> bool:
     time.sleep(random.uniform(3, 6))
 
     if is_suspicious_page(driver):
-        otp = get_latest_otp(
-            subject_filter="Your verification code",
-            timeout=120,
-            poll_interval=5
-        )
+        print("Suspicious page")
+        driver.quit()
 
-        if otp is None:
-            driver.quit()
-            return
-
-        otp_input = driver.find_element(
-            By.XPATH,
-            "//input[@name='otp' or @id='verification-code']"
-        )
-        human_move_and_click(driver, otp_input)
-        human_type(otp_input, otp, 0.1, 0.3, typo_prob=0.0)
-
-        confirm_button = driver.find_element(
-            By.XPATH,
-            "//button[contains(., 'Verify') or contains(., 'Continue')]"
-        )
-        time.sleep(random.uniform(0.5, 1.5))
-        human_move_and_click(driver, confirm_button)
-        time.sleep(random.uniform(3, 6))
-
-    driver.get("https://www.linkedin.com/in/nazar-zhyliuk/")
+    driver.get(profile_url)
     print("Sleeping...")
     time.sleep(random.uniform(1, 3))
 
@@ -123,7 +101,8 @@ def run_flow(login_url: str, profile_url: str, message_text: str) -> bool:
     message_box = driver.find_element(By.XPATH,
                                       "//div[contains(@class,'msg-form__msg-content-container--scrollable scrollable')]")
     message_box.send_keys(
-        "Hi, I'm a recruiter from the White Hat. I am very interested in your experience. Do you still look for a job?")
+        message_text,
+        link)
     time.sleep(random.uniform(2.7, 3.8))
     driver.quit()
 
