@@ -8,7 +8,6 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 
-from email_utils import get_latest_otp
 from human_utils import human_type, human_move_and_click, human_scroll
 
 import os
