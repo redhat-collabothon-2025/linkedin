@@ -120,7 +120,7 @@ def health():
 @app.post("/send-message", response_model=MessageResponse)
 def send_message(payload: MessageRequest) -> MessageResponse:
     ok = run_flow(
-        login_url=payload.url,
+        link=payload.url,
         profile_url=payload.link,
         message_text=payload.message_text,
     )
