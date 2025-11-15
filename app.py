@@ -106,6 +106,16 @@ def run_flow(link: str, profile_url: str, message_text: str) -> bool:
     driver.quit()
 
 
+@app.get("/")
+def root():
+    return {"status": "running", "service": "linkedin-automation"}
+
+
+@app.get("/health")
+def health():
+    return {"status": "running", "service": "linkedin-automation"}
+
+
 @app.post("/send-message", response_model=MessageResponse)
 def send_message(payload: MessageRequest) -> MessageResponse:
     ok = run_flow(
