@@ -11,6 +11,11 @@ from selenium.webdriver.common.keys import Keys
 from email_utils import get_latest_otp
 from human_utils import human_type, human_move_and_click, human_scroll
 
+import os
+
+USER_EMAIL = os.getenv("USER_EMAIL")
+USER_PASSWORD = os.getenv("USER_PASSWORD")
+
 app = FastAPI()
 
 
@@ -54,13 +59,13 @@ def run_flow(login_url: str, profile_url: str, message_text: str) -> bool:
         )
 
         human_move_and_click(driver, username_input)
-        human_type(username_input, user_mail, 0.15, 0.6, typo_prob=0.03)
+        human_type(username_input, USER_EMAIL, 0.15, 0.6, typo_prob=0.03)
 
         time.sleep(random.uniform(0.2, 0.7))
         username_input.send_keys(Keys.TAB)
         time.sleep(random.uniform(0.2, 0.7))
 
-        human_type(password_input, user_password, 0.15, 0.6, typo_prob=0.02)
+        human_type(password_input, USER_PASSWORD, 0.15, 0.6, typo_prob=0.02)
 
         button = driver.find_element(
             By.XPATH,
